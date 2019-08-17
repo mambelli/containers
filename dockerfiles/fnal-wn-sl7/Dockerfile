@@ -1,5 +1,6 @@
 # Selecting SL7 as the base OS 
 FROM scientificlinux/sl:7 
+MAINTAINER Marco Mambelli "marcom@fnal.gov"
 
 # Setting up the HTCondor Madison repository 
 # Technically, HTCondor isn't installed but this has been done 
@@ -27,3 +28,7 @@ RUN yum install -y xrootd-client-libs-4.9.1-1.osg34.el7.x86_64 xrootd-libs-4.9.1
 
 # Default entry point 
 CMD ["/bin/bash"] 
+
+# build info
+RUN echo "Source: fermilab/fnal-wn-sl7" > /image-source-info.txt
+RUN echo "Timestamp:" `date --utc` | tee /image-build-info.txt

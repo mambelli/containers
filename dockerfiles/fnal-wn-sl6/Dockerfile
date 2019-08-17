@@ -1,5 +1,6 @@
 # Selecting SL6 as the base OS 
 FROM scientificlinux/sl:6 
+MAINTAINER Marco Mambelli "marcom@fnal.gov"
 
 # Setting up the HTCondor Madison repository 
 # Technically, HTCondor isn't installed but this has been done 
@@ -30,3 +31,7 @@ ENV UPS_OVERRIDE "-H Linux64bit+2.6-2.12"
 
 # Default entry point 
 CMD ["/bin/bash"]
+
+# build info
+RUN echo "Source: fermilab/fnal-wn-sl6" > /image-source-info.txt
+RUN echo "Timestamp:" `date --utc` | tee /image-build-info.txt
