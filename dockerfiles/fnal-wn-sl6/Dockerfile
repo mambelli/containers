@@ -29,6 +29,35 @@ RUN yum install -y xrootd-client-libs-4.9.1-1.osg34.el6.x86_64 xrootd-libs-4.9.1
 # Setting UPS_OVERRIDE for SL6 gpgrid images 
 ENV UPS_OVERRIDE "-H Linux64bit+2.6-2.12" 
 
+
+# Cleaning caches to reduce size of image
+RUN yum clean all
+
+# OSG suggested mount points
+RUN for MNTPOINT in \
+        /cvmfs \
+        /hadoop \
+        /hdfs \
+        /lizard \
+        /mnt/hadoop \
+        /mnt/hdfs \
+        /xenon \
+        /scratch \
+        /spt \
+        /stash2 \
+    ; do \
+        mkdir -p $MNTPOINT ; \
+    done
+
+#################################
+# Temporary fix - Manually add Singularity files
+# repo done on 8/29 by UNL sysadmin
+
+RUN git clone https://github.com/jthiltges/singularity-environment.git /usr/singularity-environment/ && \
+    cp -r /usr/singularity-environment/{environment,.exec,.run,.shell,singularity,.singularity.d,.test} / && \
+    mkdir /.singularity.d/libs
+
+
 # Default entry point 
 CMD ["/bin/bash"]
 
