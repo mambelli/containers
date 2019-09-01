@@ -24,11 +24,30 @@ rpm -Uvh https://repo.opensciencegrid.org/osg/3.4/osg-3.4-el6-release-latest.rpm
 # Installing packages 
 # Singularity version has been explicitly specified to control upgrades 
 # xrootd packages have been version locked as well to control upgrades 
-RUN yum install -y xrootd-client-libs-4.9.1-1.osg34.el6.x86_64 xrootd-libs-4.9.1-1.osg34.el6.x86_64 xrootd-client-4.9.1-1.osg34.el6.x86_64 gfal2-plugin-xrootd-2.16.1-1.el6.x86_64 osg-wn-client krb5-workstation strace redhat-lsb-core mesa-libGLU mesa-libGLU-devel libXmu cvmfs gstreamer-plugins-base libXScrnSaver libSM-devel libXpm-devel libgfortran glibc.i686 libXmu libXmu-devel expat-devel libxml2-devel mysql-libs openssh-clients openssl-devel tzdata glibc-headers glibc-devel singularity-runtime-2.6.1-1.1.osg34.el6.x86_64 
+RUN yum install -y xrootd-client-libs-4.9.1-1.osg34.el6.x86_64 xrootd-libs-4.9.1-1.osg34.el6.x86_64 xrootd-client-4.9.1-1.osg34.el6.x86_64 gfal2-plugin-xrootd-2.16.1-1.el6.x86_64 osg-wn-client krb5-workstation strace redhat-lsb-core mesa-libGLU mesa-libGLU-devel libXmu cvmfs gstreamer-plugins-base libXScrnSaver libSM-devel libXpm-devel libgfortran glibc.i686 libXmu libXmu-devel expat-devel libxml2-devel mysql-libs openssh-clients openssl-devel tzdata glibc-headers glibc-devel singularity-runtime-2.6.1-1.1.osg34.el6.x86_64
 
 # Setting UPS_OVERRIDE for SL6 gpgrid images 
 ENV UPS_OVERRIDE "-H Linux64bit+2.6-2.12" 
 
+# Default entry point 
+CMD ["/bin/bash"]
+
+
+#######################
+# Parts added
+
+# osg-wn-client already installed and osg-ca-certs is a dependency. Should CRLs (.r0) be removed?
+#RUN yum -y install osg-ca-certs osg-wn-client \
+#    && rm -f /etc/grid-security/certificates/*.r0
+
+#################################
+# Temporary fix - Manually add Singularity files
+# repo done on 8/29 by UNL sysadmin
+
+RUN yum install -y git && \
+    git clone https://github.com/jthiltges/singularity-environment.git /usr/singularity-environment/ && \
+    cp -r /usr/singularity-environment/{environment,.exec,.run,.shell,singularity,.singularity.d,.test} / && \
+    mkdir /.singularity.d/libs
 
 # Cleaning caches to reduce size of image
 RUN yum clean all
@@ -48,18 +67,6 @@ RUN for MNTPOINT in \
     ; do \
         mkdir -p $MNTPOINT ; \
     done
-
-#################################
-# Temporary fix - Manually add Singularity files
-# repo done on 8/29 by UNL sysadmin
-
-RUN git clone https://github.com/jthiltges/singularity-environment.git /usr/singularity-environment/ && \
-    cp -r /usr/singularity-environment/{environment,.exec,.run,.shell,singularity,.singularity.d,.test} / && \
-    mkdir /.singularity.d/libs
-
-
-# Default entry point 
-CMD ["/bin/bash"]
 
 # build info
 RUN echo "Source: fermilab/fnal-wn-sl6" > /image-source-info.txt
