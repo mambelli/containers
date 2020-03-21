@@ -2,29 +2,41 @@
 FROM scientificlinux/sl:7 
 MAINTAINER Marco Mambelli "marcom@fnal.gov"
 
-# Setting up the HTCondor Madison repository 
-# Technically, HTCondor isn't installed but this has been done 
-# to keep in sync with other Docker file and keep the source of 
-# the packages consistent 
-# Assigning the repo yum prio of 90 
-# Installing wget to help with repo setup 
-RUN yum install -y wget sed ;\ 
-/usr/bin/wget http://research.cs.wisc.edu/htcondor/yum/repo.d/htcondor-stable-rhel7.repo -O /etc/yum.repos.d/condor.repo ;\ 
-/usr/bin/wget http://research.cs.wisc.edu/htcondor/yum/RPM-GPG-KEY-HTCondor -O /etc/pki/rpm-gpg/RPM-GPG-KEY-HTCondor ;\ 
-echo "priority=90" >> /etc/yum.repos.d/condor.repo ;\ 
-echo "gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-HTCondor" >> /etc/yum.repos.d/condor.repo 
+# Setting up the HTCondor Madison repository
+# Technically, HTCondor isn't installed but this has been done
+# to keep in sync with other Docker file and keep the source of
+# the packages consistent
+# Assigning the repo yum prio of 90
+# Installing wget to help with repo setup
+RUN yum install -y wget sed ;\
+    /usr/bin/wget http://research.cs.wisc.edu/htcondor/yum/repo.d/htcondor-stable-rhel7.repo -O /etc/yum.repos.d/condor.repo ;\
+    /usr/bin/wget http://research.cs.wisc.edu/htcondor/yum/RPM-GPG-KEY-HTCondor -O /etc/pki/rpm-gpg/RPM-GPG-KEY-HTCondor ;\
+    echo "priority=90" >> /etc/yum.repos.d/condor.repo ;\
+    echo "exclude=*.i686" >> /etc/yum.repos.d/condor.repo ;\
+    echo "gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-HTCondor" >> /etc/yum.repos.d/condor.repo
 
-# Next setting up EPEL and OSG repositories 
-# OSG by default has a YUM prio of 98 
-# Assigning EPEL YUM prio of 99 
-RUN rpm -Uvh http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm ;\ 
-rpm -Uvh https://repo.opensciencegrid.org/osg/3.4/osg-3.4-el7-release-latest.rpm ;\ 
-/bin/sed -i '/^enabled=1/a priority=99' /etc/yum.repos.d/epel.repo 
+# Next setting up EPEL and OSG repositories
+# OSG by default has a YUM  prio of 98
+# Assigning EPEL YUM prio of 99
+RUN rpm -Uvh http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm ;\
+    rpm -Uvh https://repo.opensciencegrid.org/osg/3.4/osg-3.4-el7-release-latest.rpm ;\
+    /bin/sed -i '/^enabled=1/a priority=99' /etc/yum.repos.d/epel.repo
 
-# Installing packages 
-# Singularity version has been explicitly specified to control upgrades 
-# xrootd packages have been version locked as well to control upgrades 
-RUN yum install -y xrootd-client-libs-4.9.1-1.osg34.el7.x86_64 xrootd-libs-4.9.1-1.osg34.el7.x86_64 xrootd-client-4.9.1-1.osg34.el7.x86_64 gfal2-plugin-xrootd-2.16.1-1.el7.x86_64 osg-wn-client krb5-workstation strace redhat-lsb-core mesa-libGLU mesa-libGLU-devel libXmu cvmfs gstreamer-plugins-base libXScrnSaver libSM-devel libXpm-devel libgfortran glibc.i686 libXmu libXmu-devel expat-devel libxml2-devel mysql-libs openssh-clients openssl-devel tzdata glibc-headers glibc-devel singularity-runtime-2.6.1-1.1.osg34.el7.x86_64 
+# Installing packages
+# Singularity version has been explicitly specified to control upgrades
+# xrootd packages have been version locked as well to control upgrades
+RUN yum install -y gcc-c++ libstdc++ xrootd-client-libs-4.11.1-1.osg34.el7.x86_64 xrootd-libs-4.11.1-1.osg34.el7.x86_64 xrootd-client-4.11.1-1.osg34.el7.x86_64 gfal2-plugin-xrootd-2.17.1-1.el7.x86_64 osg-wn-client krb5-workstation strace redhat-lsb-core mesa-libGLU mesa-libGLU-devel libXmu cvmfs gstreamer-plugins-base libXScrnSaver libSM-devel libXpm-devel libgfortran glibc.i686 libXmu libXmu-devel expat-devel libxml2-devel mysql-libs libtiff libjpeg-turbo openssh-clients openssl-devel tzdata glibc-headers glibc-devel singularity-3.5.3-1.1.osg34.el7.x86_64 
+
+# Overriding the default singularity configuration
+ADD shared/singularity.conf /etc/singularity/singularity.conf
+
+# SSH config needs to be added
+ADD fnal-wn-sl7/ssh_config.sl7 /etc/ssh/ssh_config
+
+# Postponing yum clean all to later, after the git installation
+# Skipping additional FermiGrid specific tests:
+# - adding /home/interactive 
+# - adding the tests
 
 # Default entry point 
 CMD ["/bin/bash"] 
@@ -40,6 +52,7 @@ CMD ["/bin/bash"]
 #################################
 # Temporary fix - Manually add Singularity files
 # repo done on 8/29 by UNL sysadmin
+# Files content from: https://github.com/sylabs/singularity/blob/master/internal/pkg/build/sources/base_environment.go
 
 RUN yum install -y git && \
     git clone https://github.com/jthiltges/singularity-environment.git /usr/singularity-environment/ && \
