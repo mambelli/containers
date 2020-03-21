@@ -28,10 +28,10 @@ RUN rpm -Uvh http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.r
 RUN yum install -y gcc-c++ libstdc++ xrootd-client-libs-4.11.1-1.osg34.el7.x86_64 xrootd-libs-4.11.1-1.osg34.el7.x86_64 xrootd-client-4.11.1-1.osg34.el7.x86_64 gfal2-plugin-xrootd-2.17.1-1.el7.x86_64 osg-wn-client krb5-workstation strace redhat-lsb-core mesa-libGLU mesa-libGLU-devel libXmu cvmfs gstreamer-plugins-base libXScrnSaver libSM-devel libXpm-devel libgfortran glibc.i686 libXmu libXmu-devel expat-devel libxml2-devel mysql-libs libtiff libjpeg-turbo openssh-clients openssl-devel tzdata glibc-headers glibc-devel singularity-3.5.3-1.1.osg34.el7.x86_64 
 
 # Overriding the default singularity configuration
-ADD shared/singularity.conf /etc/singularity/singularity.conf
+ADD dockerfiles/shared/singularity.conf /etc/singularity/singularity.conf
 
 # SSH config needs to be added
-ADD fnal-wn-sl7/ssh_config.sl7 /etc/ssh/ssh_config
+ADD dockerfiles/fnal-wn-sl7/ssh_config.sl7 /etc/ssh/ssh_config
 
 # Postponing yum clean all to later, after the git installation
 # Skipping additional FermiGrid specific tests:
