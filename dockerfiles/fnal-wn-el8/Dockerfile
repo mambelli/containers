@@ -30,11 +30,17 @@ RUN yum -y install https://repo.opensciencegrid.org/osg/3.5/osg-3.5-el8-release-
 # MPI libraries recommended by Marc Paterno: mpich mpich-devel numactl numactl-devel
 # OSG has only: osg-wn-client redhat-lsb-core singularity
 # GFAL was versioned: gfal2-plugin-xrootd-2.17.1-1.el8.x86_64
-RUN yum install -y  --enablerepo=PowerTools  --enablerepo=osg-development redhat-lsb-core \
+#RUN yum install -y  --enablerepo=PowerTools  --enablerepo=osg-development redhat-lsb-core \
+#        gcc-c++ libstdc++ xrootd-client-libs-4.12.1-1.osg35.el8.x86_64 xrootd-libs-4.12.1-1.osg35.el8.x86_64 xrootd-client-libs-4.12.1-1.osg35.el8.x86_64 gfal2-plugin-xrootd \
+#        osg-wn-client krb5-workstation strace redhat-lsb-core mesa-libGLU mesa-libGLU-devel libXmu cvmfs gstreamer-plugins-base libXScrnSaver libSM-devel libXpm-devel libgfortran glibc.i686 \
+#        libXmu libXmu-devel expat-devel libxml2-devel mysql-libs libtiff libjpeg-turbo openssh-clients openssl-devel tzdata glibc-headers glibc-devel mpich mpich-devel numactl numactl-devel \
+#        singularity 
+RUN yum install -y  --enablerepo=PowerTools  --enablerepo=osg-development \
         gcc-c++ libstdc++ xrootd-client-libs-4.12.1-1.osg35.el8.x86_64 xrootd-libs-4.12.1-1.osg35.el8.x86_64 xrootd-client-libs-4.12.1-1.osg35.el8.x86_64 gfal2-plugin-xrootd \
-        osg-wn-client krb5-workstation strace redhat-lsb-core mesa-libGLU mesa-libGLU-devel libXmu cvmfs gstreamer-plugins-base libXScrnSaver libSM-devel libXpm-devel libgfortran glibc.i686 \
-        libXmu libXmu-devel expat-devel libxml2-devel mysql-libs libtiff libjpeg-turbo openssh-clients openssl-devel tzdata glibc-headers glibc-devel mpich mpich-devel numactl numactl-devel \
+        osg-wn-client krb5-workstation strace redhat-lsb-core libXmu cvmfs libgfortran glibc.i686 \
+        expat-devel libxml2-devel mysql-libs libtiff libjpeg-turbo openssh-clients openssl-devel tzdata glibc-headers glibc-devel mpich mpich-devel numactl numactl-devel \
         singularity 
+
 
 
 # Overriding the default singularity configuration
