@@ -33,7 +33,7 @@ RUN yum -y install https://repo.opensciencegrid.org/osg/3.5/osg-3.5-el8-release-
 RUN yum install -y  --enablerepo=PowerTools  --enablerepo=osg-development redhat-lsb-core \
         gcc-c++ libstdc++ xrootd-client-libs-4.12.1-1.osg35.el8.x86_64 xrootd-libs-4.12.1-1.osg35.el8.x86_64 xrootd-client-libs-4.12.1-1.osg35.el8.x86_64 gfal2-plugin-xrootd \
         osg-wn-client krb5-workstation strace redhat-lsb-core mesa-libGLU mesa-libGLU-devel libXmu cvmfs gstreamer-plugins-base libXScrnSaver libSM-devel libXpm-devel libgfortran glibc.i686 \
-        libXmu libXmu-devel expat-devel libxml2-devel mysql-libs libtiff libjpeg-turbo openssh-clients openssl-devel tzdata glibc-headers glibc-devel mpich mpich-devel numactl numactl-devel 
+        libXmu libXmu-devel expat-devel libxml2-devel mysql-libs libtiff libjpeg-turbo openssh-clients openssl-devel tzdata glibc-headers glibc-devel mpich mpich-devel numactl numactl-devel \
         singularity 
 
 
