@@ -1,0 +1,93 @@
+# Selecting SL7 as the base OS 
+FROM centos:centos8 
+MAINTAINER Marco Mambelli "marcom@fnal.gov"
+LABEL name="FNAL Worked Node on EL8 with OSG 3.5 Worker Node Client"
+
+# Setting up the HTCondor Madison repository
+# Technically, HTCondor isn't installed but this has been done
+# to keep in sync with other Docker file and keep the source of
+# the packages consistent
+# Assigning the repo yum prio of 90
+# Installing wget to help with repo setup
+RUN yum install -y wget sed ;\
+    /usr/bin/wget http://research.cs.wisc.edu/htcondor/yum/repo.d/htcondor-stable-rhel8.repo -O /etc/yum.repos.d/condor.repo ;\
+    /usr/bin/wget http://research.cs.wisc.edu/htcondor/yum/RPM-GPG-KEY-HTCondor -O /etc/pki/rpm-gpg/RPM-GPG-KEY-HTCondor ;\
+    echo "priority=90" >> /etc/yum.repos.d/condor.repo ;\
+    echo "exclude=*.i686" >> /etc/yum.repos.d/condor.repo ;\
+    echo "gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-HTCondor" >> /etc/yum.repos.d/condor.repo
+
+# Next setting up EPEL and OSG repositories
+# OSG by default has a YUM  prio of 98
+# Assigning EPEL YUM prio of 99
+RUN yum -y install https://repo.opensciencegrid.org/osg/3.5/osg-3.5-el8-release-latest.rpm \
+                   epel-release ;\
+    /bin/sed -i '/^enabled=1/a priority=99' /etc/yum.repos.d/epel.repo ;\
+    echo "exclude=*condor*" >> /etc/yum.repos.d/osg.repo
+
+# Installing packages
+# Singularity version has been explicitly specified to control upgrades
+# xrootd packages have been version locked as well to control upgrades
+# MPI libraries recommended by Marc Paterno: mpich mpich-devel numactl numactl-devel
+# OSG has only: osg-wn-client redhat-lsb-core singularity
+# GFAL was versioned: gfal2-plugin-xrootd-2.17.1-1.el8.x86_64
+RUN yum install -y  --enablerepo=PowerTools  --enablerepo=osg-development redhat-lsb-core \
+        gcc-c++ libstdc++ xrootd-client-libs-4.12.1-1.osg35.el8.x86_64 xrootd-libs-4.12.1-1.osg35.el8.x86_64 xrootd-client-libs-4.12.1-1.osg35.el8.x86_64 gfal2-plugin-xrootd \
+        osg-wn-client krb5-workstation strace redhat-lsb-core mesa-libGLU mesa-libGLU-devel libXmu cvmfs gstreamer-plugins-base libXScrnSaver libSM-devel libXpm-devel libgfortran glibc.i686 \
+        libXmu libXmu-devel expat-devel libxml2-devel mysql-libs libtiff libjpeg-turbo openssh-clients openssl-devel tzdata glibc-headers glibc-devel mpich mpich-devel numactl numactl-devel 
+        singularity 
+
+
+# Overriding the default singularity configuration
+ADD shared/singularity.conf /etc/singularity/singularity.conf
+
+# SSH config needs to be added
+ADD fnal-wn-el8/ssh_config.el8 /etc/ssh/ssh_config
+
+# Postponing yum clean all to later, after the git installation
+# Skipping additional FermiGrid specific tests:
+# - adding /home/interactive 
+# - adding the tests
+
+# Default entry point 
+CMD ["/bin/bash"] 
+
+
+#######################
+# Parts added
+
+# osg-wn-client already installed and osg-ca-certs is a dependency. Should CRLs (.r0) be removed?
+#RUN yum -y install osg-ca-certs osg-wn-client \
+#    && rm -f /etc/grid-security/certificates/*.r0
+
+#################################
+# Temporary fix - Manually add Singularity files
+# repo done on 8/29 by UNL sysadmin
+# Files content from: https://github.com/sylabs/singularity/blob/master/internal/pkg/build/sources/base_environment.go
+
+RUN yum install -y git && \
+    git clone https://github.com/jthiltges/singularity-environment.git /usr/singularity-environment/ && \
+    cp -r /usr/singularity-environment/{environment,.exec,.run,.shell,singularity,.singularity.d,.test} / && \
+    mkdir /.singularity.d/libs
+
+# Cleaning caches to reduce size of image
+RUN yum clean all
+
+# OSG suggested mount points
+RUN for MNTPOINT in \
+        /cvmfs \
+        /hadoop \
+        /hdfs \
+        /lizard \
+        /mnt/hadoop \
+        /mnt/hdfs \
+        /xenon \
+        /scratch \
+        /spt \
+        /stash2 \
+    ; do \
+        mkdir -p $MNTPOINT ; \
+    done
+
+# build info
+RUN echo "Source: fermilab/fnal-wn-sl7" > /image-source-info.txt
+RUN echo "Timestamp:" `date --utc` | tee /image-build-info.txt
