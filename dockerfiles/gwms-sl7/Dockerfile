@@ -11,7 +11,7 @@ RUN yum install -y wget sed git;\
     yum install -y osg-ca-certs
 
 # yum dep program needs to be added
-ADD gwms-sl7/yumalldeps.sh /usr/bin/yumalldeps.sh
+ADD shared/yumalldeps.sh /usr/bin/yumalldeps.sh
 
 # Specific dependencies for GlideinWMS will be added 
 
