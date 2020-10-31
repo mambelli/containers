@@ -29,6 +29,7 @@ RUN yum -y install https://repo.opensciencegrid.org/osg/3.5/osg-3.5-el8-release-
 # xrootd packages have been version locked as well to control upgrades
 # MPI libraries recommended by Marc Paterno: mpich mpich-devel numactl numactl-devel
 # Art v3_06 libraries requested by R.Kutschke [RITM1002405]: pcre2 xxhash-libs libzstd libzstd-devel 
+# libcurl-devel for Minerva (via K.Herner)
 # OSG has only: osg-wn-client redhat-lsb-core singularity
 # GFAL was versioned: gfal2-plugin-xrootd-2.17.1-1.el8.x86_64
 #RUN yum install -y  --enablerepo=PowerTools  --enablerepo=osg-development redhat-lsb-core \
@@ -40,7 +41,7 @@ RUN yum install -y  --enablerepo=PowerTools  --enablerepo=osg-development \
         gcc-c++ libstdc++ xrootd-client-libs-4.12.1-1.osg35.el8.x86_64 xrootd-libs-4.12.1-1.osg35.el8.x86_64 xrootd-client-libs-4.12.1-1.osg35.el8.x86_64 gfal2-plugin-xrootd \
         osg-wn-client krb5-workstation strace redhat-lsb-core mesa-libGLU mesa-libGLU-devel libXmu libXmu-devel cvmfs libXScrnSaver libSM-devel libXpm-devel libgfortran glibc.i686 \
         expat-devel libxml2-devel mysql-libs libtiff libjpeg-turbo openssh-clients openssl-devel tzdata glibc-headers glibc-devel pcre2 xxhash-libs libzstd libzstd-devel mpich mpich-devel numactl numactl-devel \
-        singularity 
+        singularity libcurl-devel
 
 
 
