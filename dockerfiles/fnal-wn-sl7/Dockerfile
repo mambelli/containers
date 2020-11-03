@@ -11,7 +11,7 @@ MAINTAINER Marco Mambelli "marcom@fnal.gov"
 RUN yum install -y wget sed ;\
     /usr/bin/wget http://research.cs.wisc.edu/htcondor/yum/repo.d/htcondor-stable-rhel7.repo -O /etc/yum.repos.d/condor.repo ;\
     /usr/bin/wget http://research.cs.wisc.edu/htcondor/yum/RPM-GPG-KEY-HTCondor -O /etc/pki/rpm-gpg/RPM-GPG-KEY-HTCondor ;\
-    echo "priority=90" >> /etc/yum.repos.d/condor.repo ;\
+    echo "priority=60" >> /etc/yum.repos.d/condor.repo ;\
     echo "exclude=*.i686" >> /etc/yum.repos.d/condor.repo ;\
     echo "gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-HTCondor" >> /etc/yum.repos.d/condor.repo
 
@@ -21,6 +21,7 @@ RUN yum install -y wget sed ;\
 RUN rpm -Uvh http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm ;\
     yum install -y https://repo.opensciencegrid.org/osg/3.5/osg-3.5-el7-release-latest.rpm ;\
     /bin/sed -i '/^enabled=1/a priority=99' /etc/yum.repos.d/epel.repo ;\
+    echo "priority=80" >> /etc/yum.repos.d/osg.repo ;\
     echo "exclude=*condor*" >> /etc/yum.repos.d/osg.repo
 
 # Installing packages
@@ -28,10 +29,11 @@ RUN rpm -Uvh http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.r
 # xrootd packages have been version locked as well to control upgrades
 # MPI libraries recommended by Marc Paterno: mpich mpich-devel numactl numactl-devel
 # Art v3_06 libraries requested by R.Kutschke [RITM1002405]: pcre2 xxhash-libs libzstd libzstd-devel 
-# libcurl-devel for Minerva (via K.Herner)
-# Updated xrootd versions, out of sync w/ GCO - RUN yum install -y gcc-c++ libstdc++ xrootd-client-libs-4.11.1-1.osg35.el7.x86_64 xrootd-libs-4.11.1-1.osg35.el7.x86_64 xrootd-client-4.11.1-1.osg35.el7.x86_64 osg-wn-client krb5-workstation strace redhat-lsb-core mesa-libGLU mesa-libGLU-devel libXmu cvmfs gstreamer-plugins-base libXScrnSaver libSM-devel libXpm-devel libgfortran glibc.i686 libXmu libXmu-devel expat-devel libxml2-devel mysql-libs libtiff libjpeg-turbo openssh-clients openssl-devel tzdata glibc-headers glibc-devel singularity-3.5.3-1.1.el7.x86_64 ;\
-# removed:  gfal2-plugin-xrootd-2.18.1-2.el7.x86_64
-RUN yum install -y gcc-c++ libstdc++ xrootd-client-libs-4.12.3-1.osg35.el7.x86_64 xrootd-libs-4.12.3-1.osg35.el7.x86_64 xrootd-client-4.12.3-1.osg35.el7.x86_64 osg-wn-client krb5-workstation strace redhat-lsb-core mesa-libGLU mesa-libGLU-devel libXmu cvmfs gstreamer-plugins-base libXScrnSaver libSM-devel libXpm-devel libgfortran glibc.i686 libXmu libXmu-devel expat-devel libxml2-devel mysql-libs libtiff libjpeg-turbo openssh-clients openssl-devel tzdata glibc-headers glibc-devel pcre2 xxhash-libs libzstd libzstd-devel mpich mpich-devel numactl numactl-devel singularity-3.6.4-1.el7.x86_64 libcurl-devel
+# libcurl-devel for Minerva (via K.Herner) [RITM1036665]
+# Updated xrootd and Singularity versions, out of sync w/ GCO: RUN yum install -y gcc-c++ libstdc++ xrootd-client-libs-4.11.1-1.osg35.el7.x86_64 xrootd-libs-4.11.1-1.osg35.el7.x86_64 xrootd-client-4.11.1-1.osg35.el7.x86_64 osg-wn-client krb5-workstation strace redhat-lsb-core mesa-libGLU mesa-libGLU-devel libXmu cvmfs gstreamer-plugins-base libXScrnSaver libSM-devel libXpm-devel libgfortran glibc.i686 libXmu libXmu-devel expat-devel libxml2-devel mysql-libs libtiff libjpeg-turbo openssh-clients openssl-devel tzdata glibc-headers glibc-devel singularity-3.5.3-1.1.el7.x86_64 ;\
+# removed:  gfal2-plugin-xrootd-2.18.1-2.el7.x86_64, verify why it was added, now in OSG
+# TODO: temporary using osg-development, should be removed after 11/5
+RUN yum install --enablerepo=osg-testing -y gcc-c++ libstdc++ xrootd-client-libs-4.12.3-1.osg35.el7.x86_64 xrootd-libs-4.12.3-1.osg35.el7.x86_64 xrootd-client-4.12.3-1.osg35.el7.x86_64 osg-wn-client krb5-workstation strace redhat-lsb-core mesa-libGLU mesa-libGLU-devel libXmu cvmfs gstreamer-plugins-base libXScrnSaver libSM-devel libXpm-devel libgfortran glibc.i686 libXmu libXmu-devel expat-devel libxml2-devel mysql-libs libtiff libjpeg-turbo openssh-clients openssl-devel tzdata glibc-headers glibc-devel pcre2 xxhash-libs libzstd libzstd-devel mpich mpich-devel numactl numactl-devel singularity-3.6.4-1.el7.x86_64 libcurl-devel
 
 # Overriding the default singularity configuration
 ADD shared/singularity.conf /etc/singularity/singularity.conf
