@@ -43,7 +43,7 @@ RUN yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noar
 #        singularity 
 RUN yum install -y  --enablerepo=PowerTools  --enablerepo=osg-development \
     osg-ca-certs \
-    gcc-c++ libstdc++ xrootd-client-libs-4.12.3-1.osg35.el8 xrootd-libs-4.12.3-1.osg35.el8 xrootd-client-libs-4.12.3-1.osg35.el8 gfal2-plugin-xrootd-2.18.1-1.osg35.el8 \
+    gcc-c++ libstdc++ xrootd-client-libs xrootd-libs xrootd-client-libs gfal2-plugin-xrootd \
     osg-wn-client krb5-workstation strace redhat-lsb-core mesa-libGLU mesa-libGLU-devel libXmu libXmu-devel cvmfs libXScrnSaver libSM-devel libXpm-devel libgfortran glibc.i686 \
     expat-devel libxml2-devel mysql-libs libtiff libjpeg-turbo openssh-clients openssl-devel tzdata glibc-headers glibc-devel singularity \
     pcre2 xxhash-libs libzstd libzstd-devel mpich mpich-devel numactl numactl-devel libffi libffi-devel libcurl-devel
