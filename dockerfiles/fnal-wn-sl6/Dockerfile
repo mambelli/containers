@@ -24,10 +24,15 @@ RUN rpm -Uvh http://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.r
 
 # Installing packages 
 # Singularity version has been explicitly specified to control upgrades 
-# xrootd packages have been version locked as well to control upgrades 
+# xrootd packages have been version locked as well to control upgrades
+# Added libraries from FNAL requests are labeled with "LIBRARIES (optional comment) [VO, requestor, SNOW req. number]
+#  libffi libffi-dev [DES, M, Paterno, RITM1038430]
+#  libcurl-devel [Minerva, K.Herner, RITM1036665]
+ 
 # libcurl-devel for Minerva (via K.Herner)
 # Change to make sure that new osg-ca-certs are picked 2020-07-31
-RUN yum install -y gcc-c++ libstdc++ xrootd-client-libs-4.11.1-1.osg34.el6.x86_64 xrootd-libs-4.11.1-1.osg34.el6.x86_64 xrootd-client-4.11.1-1.osg34.el6.x86_64 gfal2-plugin-xrootd-2.17.1-1.el6.x86_64 osg-wn-client krb5-workstation strace redhat-lsb-core mesa-libGLU mesa-libGLU-devel libXmu cvmfs gstreamer-plugins-base libXScrnSaver libSM-devel libXpm-devel libgfortran glibc.i686 libXmu libXmu-devel expat-devel libxml2-devel mysql-libs libtiff libjpeg-turbo openssh-clients openssl-devel tzdata glibc-headers glibc-devel singularity-3.5.3-1.1.osg34.el6.x86_64 libcurl-devel
+RUN yum install -y gcc-c++ libstdc++ xrootd-client-libs-4.11.1-1.osg34.el6.x86_64 xrootd-libs-4.11.1-1.osg34.el6.x86_64 xrootd-client-4.11.1-1.osg34.el6.x86_64 gfal2-plugin-xrootd-2.17.1-1.el6.x86_64 osg-wn-client krb5-workstation strace redhat-lsb-core mesa-libGLU mesa-libGLU-devel libXmu cvmfs gstreamer-plugins-base libXScrnSaver libSM-devel libXpm-devel libgfortran glibc.i686 libXmu libXmu-devel expat-devel libxml2-devel mysql-libs libtiff libjpeg-turbo openssh-clients openssl-devel tzdata glibc-headers glibc-devel singularity-3.5.3-1.1.osg34.el6.x86_64 \
+    libcurl-devel libffi libffi-dev
 
 # Overriding the default singularity configuration
 ADD shared/singularity.conf /etc/singularity/singularity.conf

@@ -28,13 +28,16 @@ RUN yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.n
 # Installing packages
 # Singularity version has been explicitly specified to control upgrades
 # xrootd packages have been version locked as well to control upgrades
-# MPI libraries recommended by Marc Paterno: mpich mpich-devel numactl numactl-devel
-# Art v3_06 libraries requested by R.Kutschke [RITM1002405]: pcre2 xxhash-libs libzstd libzstd-devel 
-# libcurl-devel for Minerva (via K.Herner) [RITM1036665]
 # Updated xrootd and Singularity versions, out of sync w/ GCO: RUN yum install -y gcc-c++ libstdc++ xrootd-client-libs-4.11.1-1.osg35.el7.x86_64 xrootd-libs-4.11.1-1.osg35.el7.x86_64 xrootd-client-4.11.1-1.osg35.el7.x86_64 osg-wn-client krb5-workstation strace redhat-lsb-core mesa-libGLU mesa-libGLU-devel libXmu cvmfs gstreamer-plugins-base libXScrnSaver libSM-devel libXpm-devel libgfortran glibc.i686 libXmu libXmu-devel expat-devel libxml2-devel mysql-libs libtiff libjpeg-turbo openssh-clients openssl-devel tzdata glibc-headers glibc-devel singularity-3.5.3-1.1.el7.x86_64 ;\
-# removed:  gfal2-plugin-xrootd-2.18.1-2.el7.x86_64, verify why it was added, now in OSG
+# Added libraries from FNAL requests are labeled with "LIBRARIES (optional comment) [VO, requestor, SNOW req. number]
+#  mpich mpich-devel numactl numactl-devel (MPI libraries) [, M.Paterno, ] libffi libffi-dev [DES, M, Paterno, RITM1038430]
+#  pcre2 xxhash-libs libzstd libzstd-devel [Art v3_06, R.Kutschke, RITM1002405]
+#  libcurl-devel [Minerva, K.Herner, RITM1036665]
+# OSG has only: osg-wn-client redhat-lsb-core singularity
+# removed:  gfal2-plugin-xrootd-2.18.1-2.el7.x86_64, verify why it was added, now also in OSG, it is a dependency of osg-wn-client
 # TODO: temporary using osg-development, should be removed after 11/5
-RUN yum install --enablerepo=osg-testing -y gcc-c++ libstdc++ xrootd-client-libs xrootd-libs xrootd-client osg-wn-client krb5-workstation strace redhat-lsb-core mesa-libGLU mesa-libGLU-devel libXmu cvmfs gstreamer-plugins-base libXScrnSaver libSM-devel libXpm-devel libgfortran glibc.i686 libXmu libXmu-devel expat-devel libxml2-devel mysql-libs libtiff libjpeg-turbo openssh-clients openssl-devel tzdata glibc-headers glibc-devel pcre2 xxhash-libs libzstd libzstd-devel mpich mpich-devel numactl numactl-devel singularity libcurl-devel
+RUN yum install --enablerepo=osg-testing -y gcc-c++ libstdc++ xrootd-client-libs xrootd-libs xrootd-client osg-wn-client krb5-workstation strace redhat-lsb-core mesa-libGLU mesa-libGLU-devel libXmu cvmfs gstreamer-plugins-base libXScrnSaver libSM-devel libXpm-devel libgfortran glibc.i686 libXmu libXmu-devel expat-devel libxml2-devel mysql-libs libtiff libjpeg-turbo openssh-clients openssl-devel tzdata glibc-headers glibc-devel singularity \
+    pcre2 xxhash-libs libzstd libzstd-devel mpich mpich-devel numactl numactl-devel libffi libffi-dev libcurl-devel
 
 # Overriding the default singularity configuration
 ADD shared/singularity.conf /etc/singularity/singularity.conf
