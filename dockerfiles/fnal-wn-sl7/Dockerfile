@@ -18,10 +18,11 @@ RUN yum install -y wget sed ;\
 # Next setting up EPEL and OSG repositories
 # OSG by default has a YUM  prio of 98
 # Assigning EPEL YUM prio of 99
-RUN rpm -Uvh http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm ;\
+RUN yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm ;\ 
+    yum install -y yum-priorities ;\
     yum install -y https://repo.opensciencegrid.org/osg/3.5/osg-3.5-el7-release-latest.rpm ;\
-    /bin/sed -i '/^enabled=1/a priority=99' /etc/yum.repos.d/epel.repo ;\
-    echo "priority=80" >> /etc/yum.repos.d/osg.repo ;\
+    # /bin/sed -i '/^enabled=1/a priority=99' /etc/yum.repos.d/epel.repo ;\
+    # echo "priority=80" >> /etc/yum.repos.d/osg.repo ;\
     echo "exclude=*condor*" >> /etc/yum.repos.d/osg.repo
 
 # Installing packages
