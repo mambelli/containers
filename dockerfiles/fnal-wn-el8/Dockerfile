@@ -33,6 +33,7 @@ RUN yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noar
 #  mpich mpich-devel numactl numactl-devel (MPI libraries) [, M.Paterno, ] libffi libffi-devel [DES, M, Paterno, RITM1038430]
 #  pcre2 xxhash-libs libzstd libzstd-devel [Art v3_06, R.Kutschke, RITM1002405]
 #  libcurl-devel [Minerva, K.Herner, RITM1036665]
+#  ftgl gl2ps libGLEW [LArSoft v09_16_00, V. Di Benedetto, RITM1085514]
 # OSG has only: osg-wn-client redhat-lsb-core singularity
 # removed:  gfal2-plugin-xrootd-2.18.1-2.el7.x86_64, verify why it was added, now in OSG
 # TODO: temporary using osg-development, should be removed after 11/5
@@ -46,7 +47,8 @@ RUN yum install -y  --enablerepo=PowerTools  --enablerepo=osg-testing \
     gcc-c++ libstdc++ xrootd-client-libs xrootd-libs xrootd-client-libs gfal2-plugin-xrootd \
     osg-wn-client krb5-workstation strace redhat-lsb-core mesa-libGLU mesa-libGLU-devel libXmu libXmu-devel cvmfs libXScrnSaver libSM-devel libXpm-devel libgfortran glibc.i686 \
     expat-devel libxml2-devel mysql-libs libtiff libjpeg-turbo openssh-clients openssl-devel tzdata glibc-headers glibc-devel singularity \
-    pcre2 xxhash-libs libzstd libzstd-devel mpich mpich-devel numactl numactl-devel libffi libffi-devel libcurl-devel
+    pcre2 xxhash-libs libzstd libzstd-devel mpich mpich-devel numactl numactl-devel libffi libffi-devel libcurl-devel \
+    ftgl gl2ps libGLEW
 
 
 
