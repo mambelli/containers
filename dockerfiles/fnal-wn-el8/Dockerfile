@@ -42,7 +42,7 @@ RUN yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noar
 #        osg-wn-client krb5-workstation strace redhat-lsb-core mesa-libGLU mesa-libGLU-devel libXmu cvmfs gstreamer-plugins-base libXScrnSaver libSM-devel libXpm-devel libgfortran glibc.i686 \
 #        libXmu libXmu-devel expat-devel libxml2-devel mysql-libs libtiff libjpeg-turbo openssh-clients openssl-devel tzdata glibc-headers glibc-devel mpich mpich-devel numactl numactl-devel \
 #        singularity 
-RUN yum install -y  --enablerepo=powertools  --enablerepo=osg-testing \
+RUN yum install -y  --enablerepo=powertools  --enablerepo=osg \
     osg-ca-certs \
     gcc-c++ libstdc++ xrootd-client-libs xrootd-libs xrootd-client-libs gfal2-plugin-xrootd \
     osg-wn-client krb5-workstation strace redhat-lsb-core mesa-libGLU mesa-libGLU-devel libXmu libXmu-devel cvmfs libXScrnSaver libSM-devel libXpm-devel libgfortran glibc.i686 \
