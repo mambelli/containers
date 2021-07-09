@@ -34,14 +34,17 @@ RUN yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.n
 #  pcre2 xxhash-libs libzstd libzstd-devel [Art v3_06, R.Kutschke, RITM1002405]
 #  libcurl-devel [Minerva, K.Herner, RITM1036665]
 #  ftgl gl2ps libGLEW giflib libAfterImage [LArSoft v09_16_00, V. Di Benedetto, RITM1085514]
+#  perl libraries: perl perl-autodie ...  perl-Scalar-List-Utils [Mu2e S.Soleti R.Kutschke, INC000001118312] 
 # OSG has only: osg-wn-client redhat-lsb-core singularity
 # removed:  gfal2-plugin-xrootd-2.18.1-2.el7.x86_64, verify why it was added, now also in OSG, it is a dependency of osg-wn-client
 # TODO: temporary using osg-development, should be removed after 11/5
-RUN yum install --enablerepo=osg-testing -y \
+#  removed --enablerepo=osg-testing 2020-07-09
+RUN yum install -y \
     osg-ca-certs \
     gcc-c++ libstdc++ xrootd-client-libs xrootd-libs xrootd-client osg-wn-client krb5-workstation strace redhat-lsb-core mesa-libGLU mesa-libGLU-devel libXmu cvmfs gstreamer-plugins-base libXScrnSaver libSM-devel libXpm-devel libgfortran glibc.i686 libXmu libXmu-devel expat-devel libxml2-devel mysql-libs libtiff libjpeg-turbo openssh-clients openssl-devel tzdata glibc-headers glibc-devel singularity \
     pcre2 xxhash-libs libzstd libzstd-devel mpich mpich-devel numactl numactl-devel libffi libffi-devel libcurl-devel \
-    ftgl gl2ps libGLEW giflib libAfterImage
+    ftgl gl2ps libGLEW giflib libAfterImage \
+    perl perl-autodie perl-Carp perl-constant perl-Data-Dumper perl-Digest perl-Digest-SHA perl-Exporter perl-File-Path perl-File-Temp perl-Getopt-Long perl-libs perl-PathTools perl-Scalar-List-Utils
 
 # Overriding the default singularity configuration
 ADD shared/singularity.conf /etc/singularity/singularity.conf
