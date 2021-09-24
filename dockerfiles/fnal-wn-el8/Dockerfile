@@ -34,6 +34,7 @@ RUN yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noar
 #  pcre2 xxhash-libs libzstd libzstd-devel [Art v3_06, R.Kutschke, RITM1002405]
 #  libcurl-devel [Minerva, K.Herner, RITM1036665]
 #  ftgl gl2ps libGLEW giflib libAfterImage [LArSoft v09_16_00, V. Di Benedetto, RITM1085514]
+#  jq [SBND Mateus F. Carneiro, RITM1235906]
 # OSG has only: osg-wn-client redhat-lsb-core singularity
 # removed:  gfal2-plugin-xrootd-2.18.1-2.el7.x86_64, verify why it was added, now in OSG
 # TODO: temporary using osg-development, should be removed after 11/5
@@ -48,7 +49,8 @@ RUN yum install -y  --enablerepo=powertools  --enablerepo=osg \
     osg-wn-client krb5-workstation strace redhat-lsb-core mesa-libGLU mesa-libGLU-devel libXmu libXmu-devel cvmfs libXScrnSaver libSM-devel libXpm-devel libgfortran glibc.i686 \
     expat-devel libxml2-devel mysql-libs libtiff libjpeg-turbo openssh-clients openssl-devel tzdata glibc-headers glibc-devel singularity \
     pcre2 xxhash-libs libzstd libzstd-devel mpich mpich-devel numactl numactl-devel libffi libffi-devel libcurl-devel \
-    ftgl gl2ps libGLEW giflib libAfterImage
+    ftgl gl2ps libGLEW giflib libAfterImage \
+    jq
 
 
 
