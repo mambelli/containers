@@ -1,4 +1,4 @@
-# Selecting SL7 as the base OS 
+# Selecting CentOS8 as the base OS
 FROM centos:centos8 
 MAINTAINER Marco Mambelli "marcom@fnal.gov"
 LABEL name="FNAL Worked Node on EL8 with OSG 3.5 Worker Node Client"
@@ -107,5 +107,5 @@ RUN for MNTPOINT in \
     done
 
 # build info
-RUN echo "Source: fermilab/fnal-wn-sl7" > /image-source-info.txt
+RUN echo "Source: fermilab/fnal-wn-el8" > /image-source-info.txt
 RUN echo "Timestamp:" `date --utc` | tee /image-build-info.txt
