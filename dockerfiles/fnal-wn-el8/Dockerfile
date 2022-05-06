@@ -1,4 +1,4 @@
-# Selecting SL7 as the base OS 
+# Selecting CentOS8 as the base OS
 FROM centos:centos8 
 MAINTAINER Marco Mambelli "marcom@fnal.gov"
 LABEL name="FNAL Worked Node on EL8 with OSG 3.5 Worker Node Client"
@@ -43,7 +43,8 @@ RUN yum install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noar
 #        osg-wn-client krb5-workstation strace redhat-lsb-core mesa-libGLU mesa-libGLU-devel libXmu cvmfs gstreamer-plugins-base libXScrnSaver libSM-devel libXpm-devel libgfortran glibc.i686 \
 #        libXmu libXmu-devel expat-devel libxml2-devel mysql-libs libtiff libjpeg-turbo openssh-clients openssl-devel tzdata glibc-headers glibc-devel mpich mpich-devel numactl numactl-devel \
 #        singularity 
-RUN yum install -y  --enablerepo=powertools  --enablerepo=osg \
+# TODO: temporary using osg-development to allow to install osg-wn-client, should be removed when the fix is in production
+RUN yum install -y  --enablerepo=powertools  --enablerepo=osg --enablerepo=osg-development \
     osg-ca-certs \
     gcc-c++ libstdc++ xrootd-client-libs xrootd-libs xrootd-client-libs gfal2-plugin-xrootd \
     osg-wn-client krb5-workstation strace redhat-lsb-core mesa-libGLU mesa-libGLU-devel libXmu libXmu-devel cvmfs libXScrnSaver libSM-devel libXpm-devel libgfortran glibc.i686 \
@@ -106,5 +107,5 @@ RUN for MNTPOINT in \
     done
 
 # build info
-RUN echo "Source: fermilab/fnal-wn-sl7" > /image-source-info.txt
+RUN echo "Source: fermilab/fnal-wn-el8" > /image-source-info.txt
 RUN echo "Timestamp:" `date --utc` | tee /image-build-info.txt
